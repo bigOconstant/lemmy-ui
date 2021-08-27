@@ -6,7 +6,6 @@ services:
         image: node:latest
         volumes:
             - ./:/lemmy
-        ports:
-            - 8082:8082
-        command: bash -c "sleep infinity"
+        command: bash -c "git submodule update --init --recursive; yarn install --pure-lockfile; yarn build:prod; node dist/js/server.js"
         working_dir: /lemmy
+        network_mode: host
