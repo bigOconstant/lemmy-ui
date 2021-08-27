@@ -1,0 +1,12 @@
+
+version: '3.5'
+
+services:
+    lemmy-ui:
+        image: node:latest
+        volumes:
+            - ./:/lemmy
+        ports:
+            - 8082:8082
+        command: bash -c "sleep infinity"
+        working_dir: /lemmy
