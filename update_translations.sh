@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-pushd ../lemmy-translations
+pushd ./lemmy-translations
 git fetch weblate
 git merge weblate/main
 git push
