@@ -1,6 +1,6 @@
 import { isBrowser } from "./utils";
 
-const testHost = "localhost:8536";
+const testHost = "lemmy:8536";
 
 let internalHost =
   (!isBrowser() && process.env.LEMMY_INTERNAL_HOST) || testHost; // used for local dev
@@ -15,7 +15,7 @@ if (isBrowser()) {
     typeof window.lemmyConfig !== "undefined" ? window.lemmyConfig : {};
 
   externalHost = `${window.location.hostname}${
-    ["1234", "1235"].includes(window.location.port)
+    ["1234", "1235","7777"].includes(window.location.port)
       ? ":8536"
       : window.location.port == ""
       ? ""
