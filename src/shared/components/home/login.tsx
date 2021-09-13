@@ -17,6 +17,7 @@ import {
   authField,
   isBrowser,
   joinLemmyUrl,
+  wolfBallsUrl,
   setIsoData,
   toast,
   validEmail,

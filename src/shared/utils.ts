@@ -89,10 +89,11 @@ export const favIconUrl = "/static/assets/icons/favicon.svg";
 export const favIconPngUrl = "/static/assets/icons/apple-touch-icon.png";
 // TODO
 // export const defaultFavIcon = `${window.location.protocol}//${window.location.host}${favIconPngUrl}`;
-export const repoUrl = "https://github.com/LemmyNet";
+export const repoUrl = "https://github.com/bigOconstant/lemmy";
 export const joinLemmyUrl = "https://join-lemmy.org";
+export const wolfBallsUrl = "https://wolfballs.com";
 export const supportLemmyUrl = `${joinLemmyUrl}/support`;
-export const docsUrl = `${joinLemmyUrl}/docs/en/index.html`;
+export const docsUrl = `https://guardiansoffreespeech.com/`;
 export const helpGuideUrl = `${joinLemmyUrl}/docs/en/about/guide.html`; // TODO find a way to redirect to the non-en folder
 export const markdownHelpUrl = `${helpGuideUrl}#markdown-guide`;
 export const sortingHelpUrl = `${helpGuideUrl}#sorting`;
