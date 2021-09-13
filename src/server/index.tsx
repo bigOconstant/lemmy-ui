@@ -22,7 +22,7 @@ import { initializeSite, setOptionalAuth } from "../shared/utils";
 const server = express();
 const [hostname, port] = process.env["LEMMY_UI_HOST"]
   ? process.env["LEMMY_UI_HOST"].split(":")
-  : ["0.0.0.0", "7777"];
+  : ["0.0.0.0", "1234"];
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
