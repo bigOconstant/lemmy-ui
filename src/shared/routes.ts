@@ -8,9 +8,11 @@ import { Instances } from "./components/home/instances";
 import { Login } from "./components/home/login";
 import { PasswordChange } from "./components/home/password_change";
 import { Setup } from "./components/home/setup";
+import { Signup } from "./components/home/signup";
 import { Modlog } from "./components/modlog";
 import { Inbox } from "./components/person/inbox";
 import { Profile } from "./components/person/profile";
+import { Reports } from "./components/person/reports";
 import { Settings } from "./components/person/settings";
 import { CreatePost } from "./components/post/create-post";
 import { Post } from "./components/post/post";
@@ -37,6 +39,10 @@ export const routes: IRoutePropsWithFetch[] = [
   {
     path: `/login`,
     component: Login,
+  },
+  {
+    path: `/signup`,
+    component: Signup,
   },
   {
     path: `/create_post`,
@@ -116,6 +122,11 @@ export const routes: IRoutePropsWithFetch[] = [
     path: `/admin`,
     component: AdminSettings,
     fetchInitialData: req => AdminSettings.fetchInitialData(req),
+  },
+  {
+    path: `/reports`,
+    component: Reports,
+    fetchInitialData: req => Reports.fetchInitialData(req),
   },
   {
     path: `/search/q/:q/type/:type/sort/:sort/listing_type/:listing_type/community_id/:community_id/creator_id/:creator_id/page/:page`,

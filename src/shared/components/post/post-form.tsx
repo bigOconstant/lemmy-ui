@@ -310,22 +310,32 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
           )}
           {this.props.enableNsfw && (
             <div class="form-group row">
+              <legend class="col-form-label col-sm-2 pt-0">
+                {i18n.t("nsfw")}
+              </legend>
               <div class="col-sm-10">
                 <div class="form-check">
                   <input
-                    class="form-check-input"
+                    class="form-check-input position-static"
                     id="post-nsfw"
                     type="checkbox"
                     checked={this.state.postForm.nsfw}
                     onChange={linkEvent(this, this.handlePostNsfwChange)}
                   />
-                  <label class="form-check-label" htmlFor="post-nsfw">
-                    {i18n.t("nsfw")}
-                  </label>
                 </div>
               </div>
             </div>
           )}
+          <input
+            tabIndex={-1}
+            autoComplete="false"
+            name="a_password"
+            type="text"
+            class="form-control honeypot"
+            id="register-honey"
+            value={this.state.postForm.honeypot}
+            onInput={linkEvent(this, this.handleHoneyPotChange)}
+          />
           <div class="form-group row">
             <div class="col-sm-10">
               <button
@@ -463,6 +473,11 @@ export class PostForm extends Component<PostFormProps, PostFormState> {
 
   handlePostNsfwChange(i: PostForm, event: any) {
     i.state.postForm.nsfw = event.target.checked;
+    i.setState(i.state);
+  }
+
+  handleHoneyPotChange(i: PostForm, event: any) {
+    i.state.postForm.honeypot = event.target.value;
     i.setState(i.state);
   }
 

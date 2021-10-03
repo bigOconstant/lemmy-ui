@@ -207,6 +207,10 @@ hr {
   text-overflow: ellipsis;
 }
 
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+
 #app {
   display: flex;
   flex-direction: column;
@@ -359,4 +363,8 @@ br.big {
 }
 .tribute-container .menu-highlighted {
   font-weight: bold;
+}
+
+.honeypot {
+  display:none !important;
 }

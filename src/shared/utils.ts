@@ -2,6 +2,7 @@ import emojiShortName from "emoji-short-name";
 import {
   BlockCommunityResponse,
   BlockPersonResponse,
+  CommentReportView,
   CommentView,
   CommunityBlockView,
   CommunityView,
@@ -13,6 +14,7 @@ import {
   MyUserInfo,
   PersonBlockView,
   PersonViewSafe,
+  PostReportView,
   PostView,
   PrivateMessageView,
   Search,
@@ -25,11 +27,14 @@ import {
 } from "lemmy-js-client";
 import markdown_it from "markdown-it";
 import markdown_it_container from "markdown-it-container";
+import markdown_it_html5_embed from "markdown-it-html5-embed";
 import markdown_it_sub from "markdown-it-sub";
 import markdown_it_sup from "markdown-it-sup";
 import moment from "moment";
 import "moment/locale/bg";
+import "moment/locale/bn";
 import "moment/locale/ca";
+import "moment/locale/cs";
 import "moment/locale/cy";
 import "moment/locale/da";
 import "moment/locale/de";
@@ -51,6 +56,7 @@ import "moment/locale/ja";
 import "moment/locale/ka";
 import "moment/locale/km";
 import "moment/locale/ko";
+import "moment/locale/ml";
 import "moment/locale/nb";
 import "moment/locale/nl";
 import "moment/locale/pl";
@@ -94,11 +100,12 @@ export const joinLemmyUrl = "https://join-lemmy.org";
 export const wolfBallsUrl = "https://wolfballs.com";
 export const supportLemmyUrl = `${joinLemmyUrl}/support`;
 export const docsUrl = `https://guardiansoffreespeech.com/`;
+export const donateLemmyUrl = `${joinLemmyUrl}/donate`;
 export const helpGuideUrl = `${joinLemmyUrl}/docs/en/about/guide.html`; // TODO find a way to redirect to the non-en folder
 export const markdownHelpUrl = `${helpGuideUrl}#markdown-guide`;
 export const sortingHelpUrl = `${helpGuideUrl}#sorting`;
 export const archiveUrl = "https://archive.is";
-export const elementUrl = "https://element.io/";
+export const elementUrl = "https://element.io";
 
 export const postRefetchSeconds: number = 60 * 1000;
 export const fetchLimit = 20;
@@ -147,6 +154,10 @@ export const languages = [
   { code: "sk" },
   { code: "vi" },
   { code: "pt" },
+  { code: "ar" },
+  { code: "bn" },
+  { code: "ml" },
+  { code: "cs" },
 ];
 
 export const themes = [
@@ -208,6 +219,16 @@ export const md = new markdown_it({
 })
   .use(markdown_it_sub)
   .use(markdown_it_sup)
+  .use(markdown_it_html5_embed, {
+    html5embed: {
+      useImageSyntax: true, // Enables video/audio embed with ![]() syntax (default)
+      attributes: {
+        audio: 'controls preload="metadata"',
+        video:
+          'width="100%" max-height="100%" controls loop preload="metadata"',
+      },
+    },
+  })
   .use(markdown_it_container, "spoiler", {
     validate: function (params: any) {
       return params.trim().match(/^spoiler\s+(.*)$/);
@@ -500,6 +521,14 @@ export function getMomentLanguage(): string {
     lang = "vi";
   } else if (lang.startsWith("pt")) {
     lang = "pt";
+  } else if (lang.startsWith("ar")) {
+    lang = "ar";
+  } else if (lang.startsWith("bn")) {
+    lang = "bn";
+  } else if (lang.startsWith("ml")) {
+    lang = "ml";
+  } else if (lang.startsWith("cs")) {
+    lang = "cs";
   } else {
     lang = "en";
   }
@@ -1042,6 +1071,26 @@ export function editPostRes(data: PostView, post: PostView) {
   }
 }
 
+export function updatePostReportRes(
+  data: PostReportView,
+  reports: PostReportView[]
+) {
+  let found = reports.find(p => p.post.id == data.post.id);
+  if (found) {
+    found.post_report = data.post_report;
+  }
+}
+
+export function updateCommentReportRes(
+  data: CommentReportView,
+  reports: CommentReportView[]
+) {
+  let found = reports.find(c => c.comment.id == data.comment.id);
+  if (found) {
+    found.comment_report = data.comment_report;
+  }
+}
+
 export function commentsToFlatNodes(comments: CommentView[]): CommentNodeI[] {
   let nodes: CommentNodeI[] = [];
   for (let comment of comments) {
@@ -1428,4 +1477,15 @@ export function personSelectName(pvs: PersonViewSafe): string {
 export function initializeSite(site: GetSiteResponse) {
   UserService.Instance.myUserInfo = site.my_user;
   i18n.changeLanguage(getLanguage());
+}
+
+const SHORTNUM_SI_FORMAT = new Intl.NumberFormat("en-US", {
+  maximumSignificantDigits: 3,
+  //@ts-ignore
+  notation: "compact",
+  compactDisplay: "short",
+});
+
+export function numToSI(value: number): string {
+  return SHORTNUM_SI_FORMAT.format(value);
 }

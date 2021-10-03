@@ -3,6 +3,7 @@ import {
   AddModToCommunityResponse,
   BanFromCommunityResponse,
   BlockPersonResponse,
+  CommentReportResponse,
   CommentResponse,
   CommentView,
   CommunityResponse,
@@ -14,6 +15,7 @@ import {
   GetPostsResponse,
   GetSiteResponse,
   ListingType,
+  PostReportResponse,
   PostResponse,
   PostView,
   SortType,
@@ -336,7 +338,7 @@ export class Community extends Component<any, State> {
     return (
       <div class="mb-2">
         <BannerIconHeader banner={community.banner} icon={community.icon} />
-        <h5 class="mb-0">{community.title}</h5>
+        <h5 class="mb-0 overflow-wrap-anywhere">{community.title}</h5>
         <CommunityLink
           community={community}
           realLink
@@ -549,6 +551,16 @@ export class Community extends Component<any, State> {
     } else if (op == UserOperation.BlockPerson) {
       let data = wsJsonToRes<BlockPersonResponse>(msg).data;
       updatePersonBlock(data);
+    } else if (op == UserOperation.CreatePostReport) {
+      let data = wsJsonToRes<PostReportResponse>(msg).data;
+      if (data) {
+        toast(i18n.t("report_created"));
+      }
+    } else if (op == UserOperation.CreateCommentReport) {
+      let data = wsJsonToRes<CommentReportResponse>(msg).data;
+      if (data) {
+        toast(i18n.t("report_created"));
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ import {
   CommentView,
   CommunityModeratorView,
   CreateCommentLike,
+  CreateCommentReport,
   DeleteComment,
   MarkCommentAsRead,
   MarkPersonMentionAsRead,
@@ -30,6 +31,7 @@ import {
   getUnixTime,
   isMod,
   mdToHtml,
+  numToSI,
   setupTippy,
   showScores,
   wsClient,
@@ -58,6 +60,8 @@ interface CommentNodeState {
   collapsed: boolean;
   viewSource: boolean;
   showAdvanced: boolean;
+  showReportDialog: boolean;
+  reportReason: string;
   my_vote: number;
   score: number;
   upvotes: number;
@@ -101,6 +105,8 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     showConfirmTransferCommunity: false,
     showConfirmAppointAsMod: false,
     showConfirmAppointAsAdmin: false,
+    showReportDialog: false,
+    reportReason: null,
     my_vote: this.props.node.comment_view.my_vote,
     score: this.props.node.comment_view.counts.score,
     upvotes: this.props.node.comment_view.counts.upvotes,
@@ -217,9 +223,10 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                       class="mr-1 font-weight-bold"
                       aria-label={i18n.t("number_of_points", {
                         count: this.state.score,
+                        formattedCount: this.state.score,
                       })}
                     >
-                      {this.state.score}
+                      {numToSI(this.state.score)}
                     </span>
                   </a>
                   <span className="mr-1">•</span>
@@ -293,7 +300,9 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                         <Icon icon="arrow-up1" classes="icon-inline" />
                         {showScores() &&
                           this.state.upvotes !== this.state.score && (
-                            <span class="ml-1">{this.state.upvotes}</span>
+                            <span class="ml-1">
+                              {numToSI(this.state.upvotes)}
+                            </span>
                           )}
                       </button>
                       {this.props.enableDownvotes && (
@@ -310,7 +319,9 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                           <Icon icon="arrow-down1" classes="icon-inline" />
                           {showScores() &&
                             this.state.upvotes !== this.state.score && (
-                              <span class="ml-1">{this.state.downvotes}</span>
+                              <span class="ml-1">
+                                {numToSI(this.state.downvotes)}
+                              </span>
                             )}
                         </button>
                       )}
@@ -343,6 +354,19 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                                 >
                                   <Icon icon="mail" />
                                 </Link>
+                              </button>
+                              <button
+                                class="btn btn-link btn-animate text-muted"
+                                onClick={linkEvent(
+                                  this,
+                                  this.handleShowReportDialog
+                                )}
+                                data-tippy-content={i18n.t(
+                                  "show_report_dialog"
+                                )}
+                                aria-label={i18n.t("show_report_dialog")}
+                              >
+                                <Icon icon="flag" />
                               </button>
                               <button
                                 class="btn btn-link btn-animate text-muted"
@@ -740,6 +764,32 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
             </button>
           </form>
         )}
+        {this.state.showReportDialog && (
+          <form
+            class="form-inline"
+            onSubmit={linkEvent(this, this.handleReportSubmit)}
+          >
+            <label class="sr-only" htmlFor={`report-reason-${cv.comment.id}`}>
+              {i18n.t("reason")}
+            </label>
+            <input
+              type="text"
+              required
+              id={`report-reason-${cv.comment.id}`}
+              class="form-control mr-2"
+              placeholder={i18n.t("reason")}
+              value={this.state.reportReason}
+              onInput={linkEvent(this, this.handleReportReasonChange)}
+            />
+            <button
+              type="submit"
+              class="btn btn-secondary"
+              aria-label={i18n.t("create_report")}
+            >
+              {i18n.t("create_report")}
+            </button>
+          </form>
+        )}
         {this.state.showBanDialog && (
           <form onSubmit={linkEvent(this, this.handleModBanBothSubmit)}>
             <div class="form-group row">
@@ -1037,6 +1087,29 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
     setupTippy();
   }
 
+  handleShowReportDialog(i: CommentNode) {
+    i.state.showReportDialog = !i.state.showReportDialog;
+    i.setState(i.state);
+  }
+
+  handleReportReasonChange(i: CommentNode, event: any) {
+    i.state.reportReason = event.target.value;
+    i.setState(i.state);
+  }
+
+  handleReportSubmit(i: CommentNode) {
+    let comment = i.props.node.comment_view.comment;
+    let form: CreateCommentReport = {
+      comment_id: comment.id,
+      reason: i.state.reportReason,
+      auth: authField(),
+    };
+    WebSocketService.Instance.send(wsClient.createCommentReport(form));
+
+    i.state.showReportDialog = false;
+    i.setState(i.state);
+  }
+
   handleModRemoveShow(i: CommentNode) {
     i.state.showRemoveDialog = true;
     i.setState(i.state);
@@ -1289,14 +1362,17 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
   get pointsTippy(): string {
     let points = i18n.t("number_of_points", {
       count: this.state.score,
+      formattedCount: this.state.score,
     });
 
     let upvotes = i18n.t("number_of_upvotes", {
       count: this.state.upvotes,
+      formattedCount: this.state.upvotes,
     });
 
     let downvotes = i18n.t("number_of_downvotes", {
       count: this.state.downvotes,
+      formattedCount: this.state.downvotes,
     });
 
     return `${points} • ${upvotes} • ${downvotes}`;
