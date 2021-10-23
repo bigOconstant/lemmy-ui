@@ -3,6 +3,7 @@ version: '3.5'
 
 services:
     lemmy-ui:
+
         build:
             context: ./compose
         ports: 
@@ -13,7 +14,8 @@ services:
             - LEMMY_INTERNAL_HOST=lemmy:8536
             - LEMMY_EXTERNAL_HOST=localhost:8536
             - LEMMY_HTTPS=false
-        command: bash -c "chown -R $USER:$GROUP ~/.npm;chown -R $USER:$GROUP ~/.config;sudo chown $USER:$USER -R .;   git submodule update --init --recursive; yarn install --pure-lockfile;npm start;"
+        #command: bash -c "sudo chown -R $USER:$GROUP ~/.npm;sudo chown -R $USER:$GROUP ~/.config;sudo chown $USER:$USER -R .;   yarn install ;sudo npm start;"
+        command: bash -c "sudo chown developer:developer -R .;sleep infinity"
         working_dir: /home/developer
         networks:
             - lemmy

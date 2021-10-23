@@ -15,3 +15,4 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 
 WORKDIR /home/developer
+
