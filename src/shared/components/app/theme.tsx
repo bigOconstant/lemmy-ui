@@ -24,16 +24,16 @@ export class Theme extends Component<Props> {
             <link
               rel="stylesheet"
               type="text/css"
-              href="/static/assets/css/themes/litely.min.css"
-              id="default-light"
-              media="(prefers-color-scheme: light)"
+              href="/static/assets/css/themes/darkly.min.css"
+              id="default-dark"
+              media="(prefers-color-scheme: no-preference), (prefers-color-scheme: dark)"
             />,
             <link
               rel="stylesheet"
               type="text/css"
               href="/static/assets/css/themes/darkly.min.css"
               id="default-dark"
-              media="(prefers-color-scheme: no-preference), (prefers-color-scheme: dark)"
+              media="(prefers-color-scheme: light)"
             />,
           ]
         )}
