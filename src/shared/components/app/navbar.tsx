@@ -272,7 +272,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   </button>
                 </li>
               )}
-              <li class="nav-item">
+              {/* <li class="nav-item">
                 <a
                   className="nav-link"
                   title={i18n.t("support_lemmy")}
@@ -280,7 +280,7 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                 >
                   <Icon icon="heart" classes="small" />
                 </a>
-              </li>
+              </li> */}
             </ul>
             <ul class="navbar-nav my-2">
               {this.canAdmin && (
