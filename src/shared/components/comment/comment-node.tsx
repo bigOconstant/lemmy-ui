@@ -182,6 +182,11 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
                   {i18n.t("creator")}
                 </div>
               )}
+              {cv.creator.bot_account && (
+                <div className="badge badge-light d-none d-sm-inline mr-2">
+                  {i18n.t("bot_account").toLowerCase()}
+                </div>
+              )}
               {(cv.creator_banned_from_community || cv.creator.banned) && (
                 <div className="badge badge-danger mr-2">
                   {i18n.t("banned")}
@@ -1111,7 +1116,8 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
   }
 
   handleModRemoveShow(i: CommentNode) {
-    i.state.showRemoveDialog = true;
+    i.state.showRemoveDialog = !i.state.showRemoveDialog;
+    i.state.showBanDialog = false;
     i.setState(i.state);
   }
 
@@ -1167,14 +1173,16 @@ export class CommentNode extends Component<CommentNodeProps, CommentNodeState> {
   }
 
   handleModBanFromCommunityShow(i: CommentNode) {
-    i.state.showBanDialog = !i.state.showBanDialog;
+    i.state.showBanDialog = true;
     i.state.banType = BanType.Community;
+    i.state.showRemoveDialog = false;
     i.setState(i.state);
   }
 
   handleModBanShow(i: CommentNode) {
-    i.state.showBanDialog = !i.state.showBanDialog;
+    i.state.showBanDialog = true;
     i.state.banType = BanType.Site;
+    i.state.showRemoveDialog = false;
     i.setState(i.state);
   }
 

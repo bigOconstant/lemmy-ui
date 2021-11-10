@@ -288,6 +288,11 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
           {this.isAdmin && (
             <span className="mx-1 badge badge-light">{i18n.t("admin")}</span>
           )}
+          {post_view.creator.bot_account && (
+            <span className="mx-1 badge badge-light">
+              {i18n.t("bot_account").toLowerCase()}
+            </span>
+          )}
           {(post_view.creator_banned_from_community ||
             post_view.creator.banned) && (
             <span className="mx-1 badge badge-danger">{i18n.t("banned")}</span>
@@ -1425,7 +1430,8 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   }
 
   handleModRemoveShow(i: PostListing) {
-    i.state.showRemoveDialog = true;
+    i.state.showRemoveDialog = !i.state.showRemoveDialog;
+    i.state.showBanDialog = false;
     i.setState(i.state);
   }
 
@@ -1474,12 +1480,14 @@ export class PostListing extends Component<PostListingProps, PostListingState> {
   handleModBanFromCommunityShow(i: PostListing) {
     i.state.showBanDialog = true;
     i.state.banType = BanType.Community;
+    i.state.showRemoveDialog = false;
     i.setState(i.state);
   }
 
   handleModBanShow(i: PostListing) {
     i.state.showBanDialog = true;
     i.state.banType = BanType.Site;
+    i.state.showRemoveDialog = false;
     i.setState(i.state);
   }
 

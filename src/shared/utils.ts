@@ -102,9 +102,11 @@ export const supportLemmyUrl = `${joinLemmyUrl}/support`;
 export const docsUrl = `https://guardiansoffreespeech.com/`;
 export const donateLemmyUrl = `${joinLemmyUrl}/donate`;
 export const helpGuideUrl = `${joinLemmyUrl}/docs/en/about/guide.html`; // TODO find a way to redirect to the non-en folder
-export const markdownHelpUrl = `${helpGuideUrl}#markdown-guide`;
+export const markdownHelpUrl = `${helpGuideUrl}#using-markdown`;
 export const sortingHelpUrl = `${helpGuideUrl}#sorting`;
-export const archiveUrl = "https://archive.is";
+export const archiveTodayUrl = "https://archive.today";
+export const ghostArchiveUrl = "https://ghostarchive.org";
+export const webArchiveUrl = "https://web.archive.org";
 export const elementUrl = "https://element.io";
 
 export const postRefetchSeconds: number = 60 * 1000;
@@ -1464,14 +1466,13 @@ export const choicesConfig = {
 
 export function communitySelectName(cv: CommunityView): string {
   return cv.community.local
-    ? cv.community.name
-    : `${hostname(cv.community.actor_id)}/${cv.community.name}`;
+    ? cv.community.title
+    : `${hostname(cv.community.actor_id)}/${cv.community.title}`;
 }
 
 export function personSelectName(pvs: PersonViewSafe): string {
-  return pvs.person.local
-    ? pvs.person.name
-    : `${hostname(pvs.person.actor_id)}/${pvs.person.name}`;
+  let pName = pvs.person.display_name || pvs.person.name;
+  return pvs.person.local ? pName : `${hostname(pvs.person.actor_id)}/${pName}`;
 }
 
 export function initializeSite(site: GetSiteResponse) {
