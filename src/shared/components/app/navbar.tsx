@@ -157,10 +157,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
           {this.props.site_res.site_view && (
             <NavLink
               to="/"
-<<<<<<< HEAD
-              //onTouchEnd={linkEvent(this, this.handleHideExpandNavbar)}
-=======
->>>>>>> 14release
               onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
               title={
                 this.props.site_res.site_view.site.description ||
@@ -184,10 +180,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                   <NavLink
                     to="/inbox"
                     className="p-1 navbar-toggler nav-link border-0"
-<<<<<<< HEAD
-                    //onTouchEnd={linkEvent(this, this.handleHideExpandNavbar)}
-=======
->>>>>>> 14release
                     onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
                     title={i18n.t("unread_messages", {
                       count: this.state.unreadInboxCount,
@@ -209,10 +201,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                     <NavLink
                       to="/reports"
                       className="p-1 navbar-toggler nav-link border-0"
-<<<<<<< HEAD
-                      //onTouchEnd={linkEvent(this, this.handleHideExpandNavbar)}
-=======
->>>>>>> 14release
                       onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
                       title={i18n.t("unread_reports", {
                         count: this.state.unreadReportCount,
@@ -248,10 +236,6 @@ export class Navbar extends Component<NavbarProps, NavbarState> {
                 <NavLink
                   to="/communities"
                   className="nav-link"
-<<<<<<< HEAD
-                  //onTouchEnd={linkEvent(this, this.handleHideExpandNavbar)}
-=======
->>>>>>> 14release
                   onMouseUp={linkEvent(this, this.handleHideExpandNavbar)}
                   title={i18n.t("communities")}
                 >
